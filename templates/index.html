@@ -137,9 +137,15 @@ async function recordAudio() {
     let chunks = [];
 
     mediaRecorder.ondataavailable = e => chunks.push(e.data);
+//
+    setTimeout(() => {
     mediaRecorder.start();
 
-    setTimeout(() => mediaRecorder.stop(), 1000);
+    setTimeout(() => {
+        mediaRecorder.stop();
+    }, 1500);
+
+}, 300);
 
     mediaRecorder.onstop = async () => {
         status.innerText = "⏳ Analyzing audio...";
