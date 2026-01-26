@@ -1,8 +1,6 @@
-
-
-flask
-numpy
-librosa
-soundfile
-scipy
-tensorflow-cpu
+flask==3.0.0
+numpy==1.26.4
+librosa==0.10.1
+soundfile==0.12.1
+scipy==1.11.4
+tensorflow-cpu==2.15.0
