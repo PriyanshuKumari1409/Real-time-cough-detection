@@ -7,9 +7,16 @@ from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
 
-# Load model
+# 🔥 SAFE MODEL LOADING (prevents crash)
 MODEL_PATH = "model/cnn_cough_sr22050_v2.h5"
-model = load_model(MODEL_PATH, compile=False)
+
+try:
+    model = load_model(MODEL_PATH, compile=False)
+    print("✅ Model loaded successfully")
+except Exception as e:
+    print("❌ Model loading failed:", e)
+    model = None   # Prevent app crash
+
 # Constants
 SAMPLE_RATE = 22050
 DURATION = 1.5
@@ -36,6 +43,12 @@ def index():
 # Prediction route
 @app.route("/predict", methods=["POST"])
 def predict():
+
+    # 🔥 Check if model loaded
+    if model is None:
+        return jsonify({
+            "error": "Model failed to load"
+        }), 500
 
     if "audio" not in request.files:
         return jsonify({"error": "No audio received"}), 400
@@ -81,7 +94,7 @@ def predict():
     })
 
 
-# 🔥 IMPORTANT FIX FOR RENDER
+# 🔥 IMPORTANT FOR RENDER (PORT FIX)
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))   # <-- THIS IS THE FIX
+    port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
