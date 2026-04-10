@@ -9,8 +9,7 @@ app = Flask(__name__)
 
 # Load model
 MODEL_PATH = "model/cnn_cough_sr22050_v2.h5"
-model = load_model(MODEL_PATH)
-
+model = load_model(MODEL_PATH, compile=False)
 # Constants
 SAMPLE_RATE = 22050
 DURATION = 1.5
